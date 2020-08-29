@@ -466,9 +466,10 @@ TABLE_SHARE *get_table_share(THD *thd, TABLE_LIST *table_list,
                                              MDL_SHARED));
 
   /* Read table definition from cache */
-  if ((share= (TABLE_SHARE*) my_hash_search_using_hash_value(&table_def_cache,
+  /*if ((share= (TABLE_SHARE*) my_hash_search_using_hash_value(&table_def_cache,
                                                              hash_value, (uchar*) key, key_length)))
     goto found;
+	*/
 
   if (!(share= alloc_table_share(table_list, key, key_length)))
   {
@@ -2817,6 +2818,7 @@ retry_share:
     */
     table= tc->get_table(thd, hash_value, key, key_length, &share);
 	table = NULL;
+	share = NULL;
     if (table)
     {
       /* We have found an unused TABLE object. */
