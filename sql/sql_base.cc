@@ -469,7 +469,8 @@ TABLE_SHARE *get_table_share(THD *thd, TABLE_LIST *table_list,
   /*if ((share= (TABLE_SHARE*) my_hash_search_using_hash_value(&table_def_cache,
                                                              hash_value, (uchar*) key, key_length)))
     goto found;
-	*/
+   */
+	
 
   if (!(share= alloc_table_share(table_list, key, key_length)))
   {
@@ -491,11 +492,12 @@ TABLE_SHARE *get_table_share(THD *thd, TABLE_LIST *table_list,
    */
   assign_new_table_id(share);
 
-  if (my_hash_insert(&table_def_cache, (uchar*) share))
+  /*if (my_hash_insert(&table_def_cache, (uchar*) share))
   {
     free_table_share(share);
     DBUG_RETURN(0);				// return error
   }
+  */
   if (open_table_def(thd, share, db_flags))
   {
     *error= share->error;

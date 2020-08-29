@@ -2009,6 +2009,7 @@ int open_table_from_share(THD *thd, TABLE_SHARE *share, const char *alias,
     if (new_field == NULL)
       goto err;
     new_field->init(outparam);
+	//因为new_field 是克隆过来的，副本和原本的record[0] 的偏移量和 ptr 指针的偏移量相同
     new_field->move_field_offset((my_ptrdiff_t) (outparam->record[0] -
                                                  outparam->s->default_values));
   }

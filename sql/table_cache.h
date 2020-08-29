@@ -367,9 +367,10 @@ bool Table_cache::add_used_table(THD *thd, TABLE *table)
       Allocate new Table_cache_element object and add it to the cache
       and array in TABLE_SHARE.
     */
-    DBUG_ASSERT(! my_hash_search(&m_cache,
+    /*DBUG_ASSERT(! my_hash_search(&m_cache,
                                  (uchar*)table->s->table_cache_key.str,
                                  table->s->table_cache_key.length));
+								 */
 
     if (!(el= new Table_cache_element(table->s)))
       return true;
