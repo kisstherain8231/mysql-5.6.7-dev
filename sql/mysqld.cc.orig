@@ -3701,8 +3701,8 @@ int init_common_variables()
     the array, excluding the last element - terminator) must match the number
     of SQLCOM_ constants.
   */
-  //compile_time_assert(sizeof(com_status_vars)/sizeof(com_status_vars[0]) - 1 ==
-   //                  SQLCOM_END + 8);
+  compile_time_assert(sizeof(com_status_vars)/sizeof(com_status_vars[0]) - 1 ==
+                     SQLCOM_END + 8);
 #endif
 
   if (get_options(&remaining_argc, &remaining_argv))
@@ -8673,11 +8673,6 @@ static void set_server_version(void)
 #endif
   if (opt_log || opt_slow_log || opt_bin_log)
     strmov(end, "-log");                        // This may slow down system
-/* BEGIN DBXP MODIFICATION */
-/* Reason for Modification: */
-/* This section adds the DBXP version number to the MySQL version number. */
-  strmov(end, "-DBXP 2.0");
-/* END DBXP MODIFICATION */
 }
 
 

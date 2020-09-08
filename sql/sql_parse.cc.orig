@@ -2199,13 +2199,6 @@ err:
 }
 
 
-/* BEGIN DBXP MODIFICATION */
-/* Reason for Modification: */
-/* This section adds the code to call the new SELECT DBXP command. */
-int DBXP_select_command(THD *thd);
-int DBXP_explain_select_command(THD *thd);
-/* END DBXP MODIFICATION */
-
 /**
   Execute command saved in thd and lex->sql_command.
 
@@ -2561,20 +2554,6 @@ mysql_execute_command(THD *thd)
     res= execute_sqlcom_select(thd, all_tables);
     break;
   }
-/* BEGIN DBXP MODIFICATION */
-/* Reason for Modification: */
-/* This section adds the code to call the new SELECT DBXP command. */
-  case SQLCOM_DBXP_SELECT:
-  {
-    DBXP_select_command(thd);
-    break;
-  }
-  case SQLCOM_DBXP_EXPLAIN_SELECT:
-  {
-    DBXP_explain_select_command(thd);
-    break;
-  }
-/* END DBXP MODIFICATION */
 case SQLCOM_PREPARE:
   {
     mysql_sql_stmt_prepare(thd);

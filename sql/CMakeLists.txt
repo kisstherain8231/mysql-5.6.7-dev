@@ -132,6 +132,10 @@ SET(SQL_SHARED_SOURCES
   sql_manager.cc
   sql_optimizer.cc
   sql_parse.cc
+  sql_dbxp_parse.cc
+  query_tree.cc
+  expression.cc
+  attribute.cc
   sql_partition.cc
   sql_partition_admin.cc
   sql_planner.cc
