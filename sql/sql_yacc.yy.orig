@@ -1126,11 +1126,6 @@ bool my_yyoverflow(short **a, YYSTYPE **b, ulong *yystacksize);
 %token  DAY_MINUTE_SYM
 %token  DAY_SECOND_SYM
 %token  DAY_SYM                       /* SQL-2003-R */
-/* BEGIN DBXP MODIFICATION */
-/* Reason for Modification: */
-/* This section defines the tokens for the DBXP commands */
-%token  DBXP_SELECT_SYM  
-/* END DBXP MODIFICATION */
 %token  DEALLOCATE_SYM                /* SQL-2003-R */
 %token  DECIMAL_NUM
 %token  DECIMAL_SYM                   /* SQL-2003-R */
@@ -1808,11 +1803,7 @@ bool my_yyoverflow(short **a, YYSTYPE **b, ulong *yystacksize);
 %type <boolfunc2creator> comp_op
 
 %type <NONE>
-/* BEGIN DBXP MODIFICATION */
-/* Reason for Modification: */
-/* Add the dbxp_select statement to the NONE type definition. */
-        query verb_clause create change select dbxp_select do drop insert replace insert2
-/* END DBXP MODIFICATION */
+        query verb_clause create change select do drop insert replace insert2
         insert_values update delete truncate rename
         show describe load alter optimize keycache preload flush
         reset purge begin commit rollback savepoint release
@@ -2030,11 +2021,6 @@ statement:
         | rollback
         | savepoint
         | select
-/* BEGIN DBXP MODIFICATION */
-/* Reason for Modification: */
-/* Add the dbxp_select statement to the list of statements(commands). */
-        | dbxp_select
-/* END DBXP MODIFICATION */
         | set
         | signal_stmt
         | show
@@ -8530,75 +8516,13 @@ opt_ignore_leaves:
 */
 
 
-/* BEGIN DBXP MODIFICATION */
-/* Reason for Modification: */
-/* This section captures (parses) the SELECT DBXP statement */
-
-dbxp_select:
-         DBXP_SELECT_SYM DBXP_select_options DBXP_select_item_list
-                 DBXP_select_from
-         {
-             LEX *lex= Lex;
-           lex->sql_command = SQLCOM_DBXP_SELECT;
-         }
-         ;
-
-/* END DBXP MODIFICATION */
-
 select:
-         select_init
+          select_init
           {
             LEX *lex= Lex;
             lex->sql_command= SQLCOM_SELECT;
           }
         ;
-
-/* BEGIN DBXP MODIFICATION */
-/* Reason for Modification: */
-/* This section captures (parses) the sub parts of the SELECT DBXP statement */
-
-DBXP_select_options:
-   /* empty */
-   | DISTINCT
-   {
-     Select->options|= SELECT_DISTINCT;
-   }
-  ;
-
-DBXP_select_from:
-  FROM join_table_list DBXP_where_clause {};
-
-DBXP_select_item_list:
-  /* empty */
-  | DBXP_select_item_list ',' select_item
-  | select_item
-  | '*'
-    {
-      THD *thd= YYTHD;
-      Item *item= new (thd->mem_root)
-                    Item_field(&thd->lex->current_select->context,
-                               NULL, NULL, "*");
-      if (item == NULL)
-        MYSQL_YYABORT;
-      if (add_item_to_list(thd, item))
-        MYSQL_YYABORT;
-      (thd->lex->current_select->with_wild)++;
-    };
-
-DBXP_where_clause:
-  /* empty */  { Select->where= 0; }
-   | WHERE expr
-    {
-      SELECT_LEX *select= Select;
-      select->where= $2;
-      if ($2)
-        $2->top_level_item();
-    }
-    ;
-
-
-/* END DBXP MODIFICATION */
-
 
 /* Need select_init2 for subselects. */
 select_init:
@@ -12719,21 +12643,7 @@ wild_and_where:
 
 /* A Oracle compatible synonym for show */
 describe:
-/* BEGIN DBXP MODIFICATION */
-/* Reason for Modification: */
-/* This section captures (parses) the EXPLAIN (DESCRIBE) DBXP statements */
-
-  describe_command DBXP_SELECT_SYM DBXP_select_options DBXP_select_item_list
-                 DBXP_select_from
-  {
-          LEX *lex= Lex;
-          lex->sql_command = SQLCOM_DBXP_EXPLAIN_SELECT;
-          lex->select_lex.db= 0;
-          lex->verbose= 0;
-  }
-
-/* END DBXP MODIFICATION */
-         | describe_command table_ident
+          describe_command table_ident
           {
             LEX *lex= Lex;
             mysql_init_select(lex);

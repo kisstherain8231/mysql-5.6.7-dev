@@ -162,11 +162,6 @@ static SYMBOL symbols[] = {
   { "DAY_MICROSECOND",	SYM(DAY_MICROSECOND_SYM)},
   { "DAY_MINUTE",	SYM(DAY_MINUTE_SYM)},
   { "DAY_SECOND",	SYM(DAY_SECOND_SYM)},
-/* BEGIN DBXP MODIFICATION */
-/* Reason for Modification: */
-/* This section identifies the symbols and values for the DBXP token */
-  { "DBXP_SELECT",         SYM(DBXP_SELECT_SYM)},
-/* END DBXP MODIFICATION */
   { "DEALLOCATE",       SYM(DEALLOCATE_SYM)},     
   { "DEC",		SYM(DECIMAL_SYM)},
   { "DECIMAL",		SYM(DECIMAL_SYM)},
