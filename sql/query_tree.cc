@@ -250,7 +250,7 @@ int Query_tree::heuristic_optimization()
      2) restrictions without expressions
      BUT...Can't delete a node that has TWO children!
   */
-  prune_tree(0, root);
+  //prune_tree(0, root);
 
   /*
     Lastly, check to see if this has the DISTINCT option.
@@ -327,8 +327,11 @@ int Query_tree::prune_tree(query_node *prev, query_node *cur_node)
       {
          if(cur_node->left == 0)
         {
-          cur_node->right->parent_nodeid = -1;
-          root = cur_node->right;
+			if(cur_node->right != 0) 
+			{
+				cur_node->right->parent_nodeid = -1;
+				root = cur_node->right;
+			}
         }
         else
         {
